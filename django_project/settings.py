@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     # local apps
     'accounts.apps.AccountsConfig',
     "pages.apps.PagesConfig",
+    'books.apps.BooksConfig',
 ]
 
 
@@ -124,8 +125,6 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
 # django crispy_forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -140,13 +139,6 @@ AUTHENTICATION_BACKENDS = (
 "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com' 
-# EMAIL_PORT = 587 
-# EMAIL_HOST_USER = '    @gmail.com' 
-# EMAIL_HOST_PASSWORD = "password here"
-# EMAIL_USE_TLS = True 
-
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
@@ -154,3 +146,9 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com' 
+# EMAIL_PORT = 587 
+# EMAIL_HOST_USER = '    @gmail.com' 
+# EMAIL_HOST_PASSWORD = "password here"
+# EMAIL_USE_TLS = True 
