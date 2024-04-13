@@ -1,9 +1,13 @@
 {% extends "_base.html" %}
-
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 {% block title %}{{ book.title }}{% endblock title %}
 
 {% block content %}
   <div class="book-detail">
+    {% if book.cover %}
+      <img class="bookcover" src="{{ book.cover.url}}" alt="{{ book.title }}">
+    {% endif %}
     <h2><a href="">{{ book.title }}</a></h2>
     <p>Author: {{ book.author }}</p>
     <p>Price: {{ book.price }}</p>
@@ -16,4 +20,5 @@
       </ul>
     </div>
   </div>
+  {% include 'books/review_create_form.html' %}
 {% endblock content %}
