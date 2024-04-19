@@ -1,0 +1,47 @@
+<!-- staff_book_status.html -->
+{% extends '_base.html' %}
+
+{% block content %}
+  <h1>Staff Book Status</h1>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Book Name</th>
+        <th>Request Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in book_requests %}
+      <tr>
+        <td>{{ request.user.username }}</td>
+        <td>{{ request.book.title }}</td>
+        <td>
+        {% if request.is_approved %}
+            Approved
+        {% elif request.is_approved == False %}
+            Denied..
+        {% else %}
+            Pending..
+        {% endif %}
+        </td>
+        <td>
+        {% if request.is_approved%}
+        <form action="{% url 'deny_request' request.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Deny</button>
+        </form>
+          
+        {% else %}
+        <form action="{% url 'approve_request' request.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Allow</button>
+          </form>
+        {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

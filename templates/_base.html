@@ -69,14 +69,15 @@
                                     data-bs-toggle="dropdown"
                                     aria-haspopup="true"
                                     aria-expanded="false"
-                                    >Dropdown</a
+                                    >Status</a
                                 >
                                 <div
                                     class="dropdown-menu"
                                     aria-labelledby="dropdownId"
                                 >
-                                    <a class="dropdown-item" href="#"
-                                        >Action 1</a
+                                    <a class="dropdown-item" 
+                                    href="{% if request.user.is_staff %}{% url 'staff_book_status' %}{% else %}{% url 'book_status' %}{% endif %}"
+                                        >book_status</a
                                     >
                                     <a class="dropdown-item" href="#"
                                         >Action 2</a
