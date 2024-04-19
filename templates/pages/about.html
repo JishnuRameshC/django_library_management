@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+{% block title %}About{% endblock title %}
+{% block content %}
+<h1>This is our About page.</h1>
+{% if user.is_authenticated %}
+<p>Hi {{ user.email }}!</p>
+{% endif %}
+
+{% endblock content %}

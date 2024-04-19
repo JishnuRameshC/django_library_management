@@ -2,6 +2,8 @@ from django.urls import reverse_lazy
 from django.views.generic import (ListView, DetailView,
                                 DeleteView,UpdateView,CreateView)
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.http import FileResponse
+from django.db.models import Q 
 
 from .models import Book,Review
 from .forms import BookForm,ReviewForm
@@ -48,7 +50,7 @@ class BookDeleteView(
     model = Book
     success_url = reverse_lazy('book_list')
     login_url = 'account_login'
-    permission_required = 'books.delete_book'
+    permission_required = 'books.can_delete_book'
     template_name = 'books/book_confirm_delete.html'
 
 
@@ -60,6 +62,15 @@ class BookUpdateView(LoginRequiredMixin,
     login_url = 'account_login'
     permission_required = 'books.change_book'
     template_name = 'books/book_update_form.html'
+
+
+# class PDFDetailView(DetailView):
+#     model = Book
+#     content_type = 'application/pdf'
+
+#     def render_to_response(self, context, **response_kwargs):
+#         pdf_doc = self.get_object()
+#         return FileResponse(open(pdf_doc.pdf_file.path, 'rb'), content_type=self.content_type)
 
 
 class ReviewCreateView(LoginRequiredMixin, CreateView):
@@ -75,3 +86,15 @@ class ReviewCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy("book_detail", kwargs={"pk": self.kwargs["pk"]})
+    
+
+class SearchResultsListView(ListView):  # new
+    model = Book
+    context_object_name = "book_list"
+    template_name = "books/search_results.html"
+    
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        )
