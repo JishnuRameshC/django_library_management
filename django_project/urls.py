@@ -11,6 +11,7 @@ urlpatterns = [
     # local apps
     path('',include('pages.urls')),
     path('book',include('books.urls')),
+    path('text',include('text_convert.urls')),
 ]+ static(
     settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
 )

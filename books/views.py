@@ -15,6 +15,11 @@ class BookListView(LoginRequiredMixin,ListView):
     context_object_name = "book_list"
     template_name = "books/book_list.html"
 
+class StaffBookListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+    model = Book
+    context_object_name = "book_list"
+    template_name = "books/libarian/staff_book_list.html"
+    permission_required = "books.special_status"
 
 class BookDetailView(
         LoginRequiredMixin,
@@ -39,7 +44,7 @@ class BookCreateView(
     model = Book
     form_class = BookForm
     login_url = 'account_login'
-    permission_required = 'books.add_book'
+    permission_required = 'books.can_add_book'
     template_name = 'books/book_create_form.html'
     success_url = reverse_lazy('book_list')
 
@@ -61,8 +66,9 @@ class BookUpdateView(LoginRequiredMixin,
     model = Book
     form_class = BookForm
     login_url = 'account_login'
-    permission_required = 'books.change_book'
+    permission_required = 'books.can_edit_book'
     template_name = 'books/book_update_form.html'
+
 
 class ReadBookView(DetailView):
     model = Book
@@ -74,6 +80,7 @@ class ReadBookView(DetailView):
             return FileResponse(open(book.book_pdf_file.path, 'rb'), content_type='application/pdf')
         # Handle case where no PDF is available
         return HttpResponse("No PDF available for this book.")
+
 
 # class PDFDetailView(DetailView):
 #     model = Book
@@ -119,12 +126,11 @@ class BooksStatusView(LoginRequiredMixin, ListView):
         return Request.objects.filter(user=self.request.user)
 
 
-class BooksStatusStaffView(LoginRequiredMixin,UserPassesTestMixin, ListView):
+class BooksStatusStaffView(LoginRequiredMixin,PermissionRequiredMixin, ListView):
     template_name = 'books/staff_book_status.html'
     context_object_name = 'book_requests'
+    permission_required = 'books.can_view_request'
 
-    def test_func(self):
-        return self.request.user.is_staff
     
     def get_queryset(self):
         return Request.objects.all()
@@ -149,25 +155,21 @@ class RequestConfirmationView(LoginRequiredMixin, ListView):
         return Request.objects.all()
 
   
-class ViewRequestsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class ViewRequestsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'books/view_requests.html'
     model = Request
     context_object_name = 'pending_requests'
-
-    def test_func(self):
-        return self.request.user.is_staff
+    permission_required = 'books.can_view_request'
 
     def get_queryset(self):
         return Request.objects.all()
 
 
-class ApproveRequestView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ApproveRequestView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Request
     fields = ['is_approved']
     success_url = reverse_lazy('staff_book_status')
-
-    def test_func(self):
-        return self.request.user.is_staff
+    permission_required = 'books.can_edit_request'
 
     def form_valid(self, form):
         request_instance = form.instance
@@ -176,12 +178,11 @@ class ApproveRequestView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         BookPermission.objects.create(book=request_instance.book, user=request_instance.user, is_approved=True)
         return super().form_valid(form)
 
-class DenyRequestView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Request
-    success_url = reverse_lazy('view_requests')
 
-    def test_func(self):
-        return self.request.user.is_staff
+class DenyRequestView(LoginRequiredMixin,PermissionRequiredMixin, DeleteView):
+    model = Request
+    success_url = reverse_lazy('staff_book_status')
+    permission_required = 'books.can_edit_request'
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()

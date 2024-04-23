@@ -15,6 +15,7 @@ from .views import (
     ViewRequestsView,
     ApproveRequestView,
     DenyRequestView,
+    StaffBookListView,
     BooksStatusStaffView,
     )
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path('status/',BooksStatusView.as_view(), name='book_status'),
     
     # URLs for book management accessible to staff only
+    path('list/',StaffBookListView.as_view(), name='staff_booklist'),
     path('create/', BookCreateView.as_view(), name='book_create'),
     path('<uuid:pk>/delete/', BookDeleteView.as_view(), name='book_delete'),
     path('<uuid:pk>/update/', BookUpdateView.as_view(), name='book_update'),
@@ -37,8 +39,8 @@ urlpatterns = [
 
     # URLs for staff only
     path('view-requests/', ViewRequestsView.as_view(), name='view_requests'),
-    path('approve-request/<int:pk>/', ApproveRequestView.as_view(), name='approve_request'),
-    path('deny-request/<int:pk>/', DenyRequestView.as_view(), name='deny_request'),
     path('staff-status/', BooksStatusStaffView.as_view(), name='staff_book_status'),
     path('read/<uuid:pk>/', ReadBookView.as_view(), name='read_book'),
+    path('approve-request/<int:pk>/', ApproveRequestView.as_view(), name='approve_request'),
+    path('deny-request/<int:pk>/', DenyRequestView.as_view(), name='deny_request'),
 ]

@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY")
-DEBUG = env.bool("DJANGO_DEBUG")  
+DEBUG = env.bool("DJANGO_DEBUG", default=False)  
 ALLOWED_HOSTS = [".herokuapp.com", "localhost", "127.0.0.1"]
 
 # Application definition
@@ -32,10 +32,12 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
+    'gTTS',
     # local apps
     'accounts.apps.AccountsConfig',
     "pages.apps.PagesConfig",
     'books.apps.BooksConfig',
+    'text_convert.apps.TextConvertConfig',
 ]
 
 
@@ -157,3 +159,11 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # EMAIL_HOST_USER = '    @gmail.com' 
 # EMAIL_HOST_PASSWORD = "password here"
 # EMAIL_USE_TLS = True 
+
+SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
+SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=2592000)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS",
+                                          default=True)
+SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
+SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)

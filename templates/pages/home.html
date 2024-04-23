@@ -9,13 +9,6 @@
 <p>Hi {{ user.email }}!</p>
 {% endif %}
 
-
-
-{% if 'books.can_edit_book' in permissions %}
-    <h1>hi there</h1>
-{% endif %}
-
-
 {% if user.is_authenticated and perms.books.can_edit_book %} 
     <h1>You have permission to edit books</h1>
 {% endif %}
@@ -28,5 +21,8 @@
 {% if user.is_authenticated and perms.books.can_view_book %} 
     <h1>You have permission to can_view_book</h1>
 {% endif %}
+<br><br><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit magnam laboriosam consequuntur ratione alias, odit facere nesciunt maiores. Praesentium id quae facilis ullam quidem rerum architecto quos necessitatibus impedit! Animi!
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit molestias maxime eum. Nisi aperiam consequatur rem dolorem, accusantium voluptatibus aspernatur aliquid facere ipsam ratione et! Labore optio quas minus ipsa?
+</p>
 
 {% endblock content %}

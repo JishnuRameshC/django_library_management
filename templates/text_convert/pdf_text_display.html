@@ -1,0 +1,26 @@
+{% extends '_base.html' %}
+{% load gTTS %}
+{% block title %}PDF to Text Result {% endblock title %}
+
+{% block content %}
+<h1>PDF to Text Conversion Result</h1>
+<audio
+    src="{% say 'en-us' 'django is the best' %}"
+    controls
+></audio>
+{% load gTTS %}
+
+<audio
+    src="{% say 'en-us' 'Django is a high-level Python Web framework' %}"
+    controls
+></audio>
+<div class="container">
+    <h4><pre>{{ text }}</pre></h4>
+
+
+
+
+
+</div>
+
+{% endblock content %}

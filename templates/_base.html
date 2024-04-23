@@ -56,11 +56,14 @@
                                 >
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="{% url 'book_list' %}" aria-current="page"
+                                <a class="nav-link active" 
+                                href="{% if request.user.is_staff %}{% url 'staff_booklist' %}{% else %}{% url 'book_list' %}{% endif %}" 
+                                aria-current="page"
                                     >Books
                                     <span class="visually-hidden">(current)</span></a
                                 >
                             </li>
+                            
                             <li class="nav-item dropdown">
                                 <a
                                     class="nav-link dropdown-toggle"
@@ -77,10 +80,35 @@
                                 >
                                     <a class="dropdown-item" 
                                     href="{% if request.user.is_staff %}{% url 'staff_book_status' %}{% else %}{% url 'book_status' %}{% endif %}"
-                                        >book_status</a
+                                        >request books</a
                                     >
-                                    <a class="dropdown-item" href="#"
-                                        >Action 2</a
+                                    {% if request.user.is_staff %}
+                                    <a class="dropdown-item" href="{% url 'book_create' %}"
+                                        >Add BOOK</a
+                                    >
+                                    {% endif %}
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a
+                                    class="nav-link dropdown-toggle"
+                                    href="#"
+                                    id="dropdownId"
+                                    data-bs-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false"
+                                    >Convert</a
+                                >
+                                <div
+                                    class="dropdown-menu"
+                                    aria-labelledby="dropdownId"
+                                >
+                                    <a class="dropdown-item" 
+                                    href="{% url 'pdf_to_text' %}"
+                                        >text to speech</a
+                                    >
+                                    <a class="dropdown-item" href="{% url 'pdf_to_text' %}"
+                                        >pdf to txt</a
                                     >
                                 </div>
                             </li>
@@ -97,6 +125,7 @@
                                 {% csrf_token %}
                                 <button class="btn btn-outline-success me-2" type="submit">logout </button>
                             </form>
+                            <h5 style="color: white;">@{{ user.username }}</h5>
                         {% else %}
                             <form class="d-flex justify-content-end" action="{% url 'account_login' %}">
                                 <button class="btn btn-outline-success me-2" type="submit">login </button>
@@ -111,17 +140,14 @@
             
 
         </header>
-        <main>
-            <div class="container">
-                {% block content %}
+        <main></main>
+           
+        {% block content %}
+    
+        {% endblock content %}
             
-                {% endblock content %}
-            </div>
-        
-        </main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
+
+
         <!-- Bootstrap JavaScript Libraries -->
         <script
             src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -136,7 +162,5 @@
         ></script>
         <!-- JavaScript -->
         <script src="{% static 'js/base.js' %}" defer></script>
-        <script src="{% static 'js/dashbord.js' %}" defer></script>
-        <script src="{% static 'js/sidebar.js' %}" defer></script>
     </body>
 </html>

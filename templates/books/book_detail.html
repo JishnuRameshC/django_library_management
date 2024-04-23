@@ -14,9 +14,12 @@
         <h2><a href="">{{ book.title }}</a></h2>
         <p>Author: {{ book.author }}</p>
         <p>
-          <a href="#" class="btn btn-primary disabled" tabindex="-1" aria-disabled="true" role="button" data-bs-toggle="button">Price:RS:{{ book.price }}</a>
           <a href="#" class="btn btn-primary disabled" tabindex="-1" aria-disabled="true" role="button" data-bs-toggle="button">RS:{{ book.price }}</a>
-          <a href="{% url 'request_permission' book.id %}">Request Permission</a>
+          <a class="btn btn-primary" href="{% url 'request_permission' book.id %}">Request Permission</a>
+          {% if request.user.is_staff %}
+          <a class="btn btn-primary" href="{% url 'book_update' book.id%}">Update BOOK</a>
+          <a class="btn btn-danger" href="{% url 'book_delete' book.id%}">Delete BOOK</a>
+          {% endif %}
         </p>
 
       </div>
@@ -28,6 +31,7 @@
         {% endfor %}
       </ul>
       {% include 'books/review_create_form.html' %}
+      
       </div>
     </div>
   </div>

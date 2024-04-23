@@ -24,6 +24,7 @@ class Book(models.Model):
             ("can_view_book", "Can view book"),
             ("can_edit_book", "Can edit book"),
             ("can_delete_book", "Can delete book"),
+            ("can_add_book", "Can add book"),
         ]
 
     def __str__(self):
@@ -61,6 +62,14 @@ class Request(models.Model):
         on_delete=models.CASCADE,
     )
     is_approved = models.BooleanField(default=None, null=True)
+    class Meta:
+        permissions = [
+            ("can_view_request", "Can view request"),
+            ("can_edit_request", "Can edit request"),
+            ("can_delete_request", "Can delete request"),
+            ("can_add_request", "Can add request"),
+
+        ]
 
     def __str__(self):
         return f"{self.user.username} - {self.book.title}"
