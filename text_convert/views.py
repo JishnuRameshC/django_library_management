@@ -1,13 +1,64 @@
 from django.shortcuts import render
 from django.views.generic import FormView
-from django.http import FileResponse
+from django.http import FileResponse,HttpResponse
+from django.urls import reverse_lazy
 
-from .forms import PDFUploadForm,TextInputForm
+from .forms import TextToSpeechForm, PDFUploadForm,TextInputForm
 
 from PyPDF2 import PdfReader
+import requests
+import base64
 
 
 
+class ConvertTextToSpeechView(FormView):
+    template_name = 'template.html'
+    form_class = TextToSpeechForm
+    success_url = reverse_lazy('download_audio')
+
+    def form_valid(self, form):
+        text_to_convert = form.cleaned_data['text']
+        
+        # API endpoint URL
+        url = "https://joj-text-to-speech.p.rapidapi.com/"
+        
+        # Payload containing text, voice settings, and audio configuration
+        payload = {
+            "input": {"text": text_to_convert},
+            "voice": {
+                "languageCode": "en-US",
+                "name": "en-US-News-L",
+                "ssmlGender": "FEMALE"
+            },
+            "audioConfig": {"audioEncoding": "MP3"}
+        }
+        
+        # Headers including RapidAPI key and host
+        headers = {
+            "content-type": "application/json",
+            "X-RapidAPI-Key": "enter_your_api_key",
+            "X-RapidAPI-Host": "joj-text-to-speech.p.rapidapi.com"
+        }
+        
+        # Sending POST request to the API
+        response = requests.post(url, json=payload, headers=headers)
+        
+        # Checking response status
+        if response.status_code == 200:
+            # Decoding base64 audio content
+            audio_content = base64.b64decode(response.json()['audioContent'])
+            
+            # Saving the audio content to a temporary file
+            with open("output.mp3", "wb") as audio_file:
+                audio_file.write(audio_content)
+        
+        return super().form_valid(form)
+
+def download_audio(request):
+    with open("output.mp3", "rb") as audio_file:
+        response = HttpResponse(audio_file.read(), content_type="audio/mpeg")
+        response['Content-Disposition'] = 'attachment; filename="output.mp3"'
+        return response
 
 
 class PDFToTextFormView(FormView):

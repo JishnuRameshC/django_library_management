@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         {% if request.is_approved %}
-                          <a class='btn btn-primary' href="#">Read PDF</a>
+                          <a class='btn btn-primary' href="{% if request.book.book_pdf_file %}{{request.book.book_pdf_file.url}}{% else %}#{% endif %}">Read PDF</a>
                         {% else %}
                         <button type="button" class="btn btn-secondary" disabled>Wait for Approval</button>
                         {% endif %}

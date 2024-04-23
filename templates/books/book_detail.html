@@ -1,39 +1,64 @@
-{% extends "_base.html" %}
+{% extends '_base.html' %}
 {% load crispy_forms_tags %}
 {% load crispy_forms_filters static%}
 
 {% block title %}{{ book.title }}{% endblock title %}
 
+
+ 
+
+
+
 {% block content %}
+
   <div class="container">
     <div class="row">
-      <div class="col-6">
+      <div class="col">
         {% if book.cover %}
-        <img class="bookcover" src="{{ book.cover.url}}" alt="{{ book.title }}" style="width: 300px; height: 300px;">
+          <img class="bookcover" src="{{ book.cover.url}}" alt="{{ book.title }}" style="width: 450px; height: 300px;">
         {% endif %}
-        <h2><a href="">{{ book.title }}</a></h2>
-        <p>Author: {{ book.author }}</p>
-        <p>
-          <a href="#" class="btn btn-primary disabled" tabindex="-1" aria-disabled="true" role="button" data-bs-toggle="button">RS:{{ book.price }}</a>
-          <a class="btn btn-primary" href="{% url 'request_permission' book.id %}">Request Permission</a>
-          {% if request.user.is_staff %}
-          <a class="btn btn-primary" href="{% url 'book_update' book.id%}">Update BOOK</a>
-          <a class="btn btn-danger" href="{% url 'book_delete' book.id%}">Delete BOOK</a>
-          {% endif %}
-        </p>
-
       </div>
-      <div class="col-6">
-        <h3>Reviews</h3>
-      <ul>
-        {% for review in book.reviews.all %}
-        <li>{{ review.review }} ({{ review.author }})</li>
-        {% endfor %}
-      </ul>
-      {% include 'books/review_create_form.html' %}
-      
+      <div class="col">
+        <h1>{{book.title}}</h1>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id impedit dolore quas amet sapiente ipsum nesciunt. Voluptas, ea debitis autem ab nobis corporis qui beatae, ducimus necessitatibus quo explicabo quas!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio sunt adipisci explicabo minus quas. Vero quis modi commodi, est saepe voluptatum. Unde quas error vero totam harum dicta, doloremque ipsa?
+        </p>
+        <a class="btn btn-primary" href="{% url 'request_permission' book.id %}">Request Permission</a>
+        {% if request.user.is_staff %}
+        <a class="btn btn-primary" href="{% url 'book_update' book.id%}">Update BOOK</a>
+        <a class="btn btn-danger" href="{% url 'book_delete' book.id%}">Delete BOOK</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h2>Author</h2>
+        <p>{{book.author}}</p>
+      </div>
+      <div class="col">
+        <h2>Price</h2>
+        <p>{{book.price}}</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <h2>Reviews</h2>
+        <ul>
+          {% for review in book.reviews.all %}
+                <li>{{ review.review }} ({{ review.author }})</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        {% include 'books/review_create_form.html' %}
       </div>
     </div>
   </div>
 
 {% endblock content %}
+

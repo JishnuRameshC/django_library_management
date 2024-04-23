@@ -14,17 +14,15 @@
           {% else %}
           <img src="..." class="card-img-top" alt="...">
           {% endif %}
-        <div class="card-body">
-          <h3><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
-          <p>Author: {{ book.author }}</p>
-          <p>Price: $ {{ book.price }}</p>
-          <p><a href="{% url 'request_permission' book.id %}">Request Permission</a></p>
-        </div>
         </a>
+        <div class="card-body">
+          <h3>{{ book.title }}</h3>
+          <p>Author: {{ book.author }}</p>
+          <p><a href="book.get_absolute_url" class="btn btn-secondary">Price: $ {{ book.price }}</a>
+          <a href="{% url 'request_permission' book.id %}" class="btn btn-secondary">Request Permission</a></p>
+        </div>
       </div>
     </div>
     {% endfor %}
   </div>
 {% endblock content %}
-
-

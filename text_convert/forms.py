@@ -5,4 +5,9 @@ class PDFUploadForm(forms.Form):
 
 class TextInputForm(forms.Form):
     pdf_file = forms.Textarea()
+    
+
+class TextToSpeechForm(forms.Form):
+    text = forms.CharField(label='Enter Text', max_length=1000, widget=forms.Textarea)
+
 

@@ -6,7 +6,6 @@ from .views import (
     BookCreateView,
     BookDeleteView,
     BookUpdateView,
-    ReadBookView,
     BooksStatusView,
     ReviewCreateView,
     SearchResultsListView,
@@ -40,7 +39,7 @@ urlpatterns = [
     # URLs for staff only
     path('view-requests/', ViewRequestsView.as_view(), name='view_requests'),
     path('staff-status/', BooksStatusStaffView.as_view(), name='staff_book_status'),
-    path('read/<uuid:pk>/', ReadBookView.as_view(), name='read_book'),
+    # path('read/<uuid:pk>/', ReadBookView.as_view(), name='read_book'),
     path('approve-request/<int:pk>/', ApproveRequestView.as_view(), name='approve_request'),
     path('deny-request/<int:pk>/', DenyRequestView.as_view(), name='deny_request'),
 ]

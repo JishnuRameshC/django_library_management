@@ -45,7 +45,7 @@ class BookCreateView(
     form_class = BookForm
     login_url = 'account_login'
     permission_required = 'books.can_add_book'
-    template_name = 'books/book_create_form.html'
+    template_name = 'books/libarian/book_create_form.html'
     success_url = reverse_lazy('book_list')
 
 
@@ -57,7 +57,7 @@ class BookDeleteView(
     success_url = reverse_lazy('book_list')
     login_url = 'account_login'
     permission_required = 'books.can_delete_book'
-    template_name = 'books/book_confirm_delete.html'
+    template_name = 'books/libarian/book_confirm_delete.html'
 
 
 class BookUpdateView(LoginRequiredMixin,
@@ -67,28 +67,21 @@ class BookUpdateView(LoginRequiredMixin,
     form_class = BookForm
     login_url = 'account_login'
     permission_required = 'books.can_edit_book'
-    template_name = 'books/book_update_form.html'
+    template_name = 'books/libarian/book_update_form.html'
 
 
-class ReadBookView(DetailView):
-    model = Book
-    template_name = 'books/read_book.html'
-
-    def get(self, request, *args, **kwargs):
-        book = self.get_object()
-        if book.book_pdf_file:
-            return FileResponse(open(book.book_pdf_file.path, 'rb'), content_type='application/pdf')
-        # Handle case where no PDF is available
-        return HttpResponse("No PDF available for this book.")
-
-
-# class PDFDetailView(DetailView):
+# class ReadBookView(DetailView):
 #     model = Book
-#     content_type = 'application/pdf'
+#     template_name = 'books/read_book.html'
 
-#     def render_to_response(self, context, **response_kwargs):
-#         pdf_doc = self.get_object()
-#         return FileResponse(open(pdf_doc.pdf_file.path, 'rb'), content_type=self.content_type)
+#     def get(self, request, *args, **kwargs):
+#         book = self.get_object()
+#         if book.book_pdf_file:
+#             return FileResponse(open(book.book_pdf_file.path, 'rb'), content_type='application/pdf')
+#         # Handle case where no PDF is available
+#         return HttpResponse("No PDF available for this book.")
+
+
 
 
 class ReviewCreateView(LoginRequiredMixin, CreateView):
