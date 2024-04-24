@@ -12,7 +12,7 @@ import base64
 
 
 class ConvertTextToSpeechView(FormView):
-    template_name = 'template.html'
+    template_name = 'text_convert/text_to_speech.html'
     form_class = TextToSpeechForm
     success_url = reverse_lazy('download_audio')
 

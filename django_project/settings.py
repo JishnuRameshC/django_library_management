@@ -14,8 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY")
-DEBUG = env.bool("DJANGO_DEBUG", default=False)  
-ALLOWED_HOSTS = [".herokuapp.com", "localhost", "127.0.0.1"]
+DEBUG = env.bool("DJANGO_DEBUG",default=False)  
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    # 'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     # third party
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'django_project.urls'
@@ -120,7 +122,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"] 
 STATIC_ROOT = BASE_DIR / "staticfiles" 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage" 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" 
 
 MEDIA_URL = "/media/" 
 MEDIA_ROOT = BASE_DIR / "media"
