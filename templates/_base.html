@@ -27,15 +27,10 @@
     </head>
 
     <body>
-       
-          
-        <header>
-            <!--  navbar  -->
-            <nav
-                class="navbar navbar-expand-sm navbar-dark bg-black"class="navbar navbar-dark bg-dark"
-            >
-                <div class="container">
-                    <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+        <!--  navbar  -->
+        <nav class="navbar sticky-top fixed-top navbar-expand-sm navbar-light bg-light">
+            <div class="container">
+                    <a class="navbar-brand" href="#">Navbar</a>
                     <button
                         class="navbar-toggler d-lg-none"
                         type="button"
@@ -47,105 +42,46 @@
                     >
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="collapsibleNavId">
-                        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="{% url 'about' %}" aria-current="page"
-                                    >About
-                                    <span class="visually-hidden">(current)</span></a
-                                >
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" 
-                                href="{% if request.user.is_staff %}{% url 'staff_booklist' %}{% else %}{% url 'book_list' %}{% endif %}" 
-                                aria-current="page"
-                                    >Books
-                                    <span class="visually-hidden">(current)</span></a
-                                >
-                            </li>
-                            
-                            <li class="nav-item dropdown">
-                                <a
-                                    class="nav-link dropdown-toggle"
-                                    href="#"
-                                    id="dropdownId"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >Status</a
-                                >
-                                <div
-                                    class="dropdown-menu"
-                                    aria-labelledby="dropdownId"
-                                >
-                                    <a class="dropdown-item" 
-                                    href="{% if request.user.is_staff %}{% url 'staff_book_status' %}{% else %}{% url 'book_status' %}{% endif %}"
-                                        >request books</a
-                                    >
-                                    {% if request.user.is_staff %}
-                                    <a class="dropdown-item" href="{% url 'book_create' %}"
-                                        >Add BOOK</a
-                                    >
-                                    {% endif %}
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a
-                                    class="nav-link dropdown-toggle"
-                                    href="#"
-                                    id="dropdownId"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    >Convert</a
-                                >
-                                <div
-                                    class="dropdown-menu"
-                                    aria-labelledby="dropdownId"
-                                >
-                                    <a class="dropdown-item" 
-                                    href="{% url 'text_to_speech' %}"
-                                        >text to speech</a
-                                    >
-                                    <a class="dropdown-item" href="{% url 'pdf_to_text' %}"
-                                        >pdf to txt</a
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="container-fluid">
-                              <form class="d-flex" method='get' action="{% url 'search_results' %}" >
-                                <input class="form-control me-2" name='q' type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                              </form>
-                        </div>
-
-                        {% if user.is_authenticated %}
-                            <form class="d-flex justify-content-end" action="{% url 'account_logout' %}">
-                                {% csrf_token %}
-                                <button class="btn btn-outline-success me-2" type="submit">logout </button>
-                            </form>
-                            <h5 style="color: white;">@{{ user.username }}</h5>
-                        {% else %}
-                            <form class="d-flex justify-content-end" action="{% url 'account_login' %}">
-                                <button class="btn btn-outline-success me-2" type="submit">login </button>
-                            </form>
-                            <form class="d-flex justify-content-end" action="{% url 'account_signup' %}">
-                                <button class="btn btn-outline-success me-2" type="submit">signup </button>
-                            </form>
-                        {% endif %}
-                    </div>
+                <div class="container-fluid">
+                        <form class="d-flex" method='get' action="{% url 'search_results' %}" >
+                        <input class="form-control me-2" name='q' type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-secondary type="submit">Search</button>
+                        </form>
                 </div>
-            </nav>
-            
 
-        </header>
-        <main></main>
-           
-        {% block content %}
-    
-        {% endblock content %}
+                {% if user.is_authenticated %}
+                    <form class="d-flex ms-auto" action="{% url 'account_logout' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-secondary me-2" type="submit">logout </button>
+                    </form>
+                    <h5 style="color: white;">@{{ user.username }}</h5>
+                {% else %}
+                    <form class="d-flex ms-auto" action="{% url 'account_login' %}">
+                        <button class="btn btn-outline-secondary me-2" type="submit">login </button>
+                    </form>
+                    <form class="d-flex ms-auto" action="{% url 'account_signup' %}">
+                        <button class="btn btn-outline-secondary me-2" type="submit">signup </button>
+                    </form>
+                {% endif %}
+            </div>
+        </nav><br><br>
+        <div class="sidebar">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% if request.user.is_staff %}{% url 'staff_booklist' %}{% else %}{% url 'book_list' %}{% endif %}">Books</a>
+            <a href="{% if request.user.is_staff %}{% url 'staff_book_status' %}{% else %}{% url 'book_status' %}{% endif %}">request books</a>
+            {% if request.user.is_staff %}
+            <a href="{% url 'book_create' %}">Add BOOK</a>
+            {% endif %}
+            <a href="{% url 'text_to_speech' %}">text to speech</a>
+            <a href="{% url 'pdf_to_text' %}">pdf to txt</a>
+        </div>
             
+        <div class="content">
+            {% block content %}
+        
+            {% endblock content %}
+        </div>   
 
 
         <!-- Bootstrap JavaScript Libraries -->

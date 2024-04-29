@@ -1,3 +1,6 @@
+
+import requests
+import base64
 from django.shortcuts import render
 from django.views.generic import FormView
 from django.http import FileResponse,HttpResponse
@@ -6,9 +9,6 @@ from django.urls import reverse_lazy
 from .forms import TextToSpeechForm, PDFUploadForm,TextInputForm
 
 from PyPDF2 import PdfReader
-import requests
-import base64
-
 
 
 class ConvertTextToSpeechView(FormView):
@@ -36,7 +36,7 @@ class ConvertTextToSpeechView(FormView):
         # Headers including RapidAPI key and host
         headers = {
             "content-type": "application/json",
-            "X-RapidAPI-Key": "enter_your_api_key",
+            "X-RapidAPI-Key": "api_kery_here",
             "X-RapidAPI-Host": "joj-text-to-speech.p.rapidapi.com"
         }
         

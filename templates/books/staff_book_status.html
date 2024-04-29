@@ -8,6 +8,8 @@
       <tr>
         <th>User</th>
         <th>Book Name</th>
+        <th>request</th>
+        <th>Return time</th>
         <th>Request Status</th>
         <th>Actions</th>
       </tr>
@@ -17,6 +19,8 @@
       <tr>
         <td>{{ request.user.username }}</td>
         <td>{{ request.book.title }}</td>
+        <td>{{ request.request_timestamp }}</td>
+        <td>{{ request.return_time }}</td>
         <td>
         {% if request.is_approved %}
             Approved

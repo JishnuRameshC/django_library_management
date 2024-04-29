@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from environs import Env
 
@@ -15,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 DEBUG = env.bool("DJANGO_DEBUG",default=False)  
-ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(',')
 
 # Application definition
 
@@ -133,6 +134,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# celery 
+CELERY_BROKER_URL = os.environ.get('CELERY-BROKER',"redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get('CELERY-BROKER',"redis://redis:6379/0")
+
 # django crispy_forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -171,3 +176,4 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS
 SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
 SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
 CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
+

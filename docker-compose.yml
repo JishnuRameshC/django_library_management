@@ -1,5 +1,7 @@
 version: '3.9'
 services:
+  redis:
+    image: redis:7.0.11-alpine
   web:
     build:  .
     command:  python /code/manage.py runserver 0.0.0.0:8000
@@ -16,15 +18,38 @@ services:
       - "DJANGO_SECURE_HSTS_PRELOAD=False"
       - "DJANGO_SESSION_COOKIE_SECURE=False"
       - "DJANGO_CSRF_COOKIE_SECURE=False"
-      - "EMAIL=your_email@gmail.com"
-      - 'EMAIL_PASSWORD=yourpassword'
+      - "EMAIL=this0is0testmail0for0me0jrc@gmail.com"
+      - 'EMAIL_PASSWORD=xmzniikhfrismbka'
+      - ALLOWED_HOSTS=localhost,127.0.0.1
     depends_on:
       - db
+      - redis
   db:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - 'POSTGRES_HOST_AUTH_METHOD=trust'
+  celery:
+    container_name: celery
+    build: .
+    command: celery -A django_project worker -l INFO
+    volumes:
+      - .:/code
+    environment:
+      - "DJANGO_SECRET_KEY=django-insecure-+rmx@bggq&-lrgooyasvqu%&(5*y$4jm(r8sinq7lnh7g0x&iy"
+      - "DJANGO_DEBUG=True"
+      - "DJANGO_SECURE_SSL_REDIRECT=False"
+      - "DJANGO_SECURE_HSTS_SECONDS=0"
+      - "DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS=False"
+      - "DJANGO_SECURE_HSTS_PRELOAD=False"
+      - "DJANGO_SESSION_COOKIE_SECURE=False"
+      - "DJANGO_CSRF_COOKIE_SECURE=False"
+      - "EMAIL=enter_ur@gmail.com"
+      - 'EMAIL_PASSWORD=enter_ur_pass'
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    depends_on:
+      - db
+      - redis
 volumes:
   postgres_data:

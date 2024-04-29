@@ -11,7 +11,17 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ['review']
 
+
+class DateTimeInput(forms.DateTimeInput):
+    input_type = "datetime-local"
+    format = "%Y-%m-%dT%H:%M"  # Format for input field value
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
 class RequestForm(forms.ModelForm):
+    return_time = forms.DateTimeField(widget=DateTimeInput())
+
     class Meta:
         model = Request
-        fields = []
+        fields = ['return_time'] 

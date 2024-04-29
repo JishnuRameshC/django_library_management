@@ -1,10 +1,12 @@
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (ListView, DetailView,
                                 DeleteView,UpdateView,CreateView)
 from django.contrib.auth.mixins import (LoginRequiredMixin,PermissionRequiredMixin,
                                         UserPassesTestMixin)
 from django.http import FileResponse,HttpResponse
 from django.db.models import Q 
+from django.core.exceptions import PermissionDenied
 
 from .models import Book,Review,Request,BookPermission
 from .forms import BookForm,ReviewForm,RequestForm
@@ -136,8 +138,16 @@ class RequestBookPermissionView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('request_confirmation')
 
     def form_valid(self, form):
+        # Check if the user has already made 5 requests
+        user_requests_count = Request.objects.filter(user=self.request.user).count()
+        if user_requests_count >= 5:
+            raise PermissionDenied("You have reached the maximum limit of book requests.")
+
+        # Set default return time to 3 days from the request timestamp
         form.instance.book = Book.objects.get(id=self.kwargs['book_id'])
         form.instance.user = self.request.user
+        form.instance.request_timestamp = timezone.now()
+        form.instance.return_time = form.instance.request_timestamp + timezone.timedelta(days=3)
         return super().form_valid(form)
 
 
